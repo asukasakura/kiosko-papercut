@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css?family=Droid+Sans:400,700');
+body{
+  font-family: 'Droid Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.container-fluid{
+  max-width: 1200px;
+}
+
+header{
+  height: 80px;
+  margin: 20px 0;
+}
+header div{
+  height: 100%;
+}
+
+.company-logo{
+  max-height: 100%;
+}
+
+.steps{
+  display: table;
+  list-style: none;
+  margin: 15px 0;
+  padding: 0;
+  width: 100%;
+}
+.steps li{
+  display: table-cell;
+  position: relative;
+}
+.steps li span{
+  background-color: #bbb;
+  border-radius: 50%;
+  color: white;
+  display: inline-block;
+  font-size: 2em;
+  height: 50px;
+  line-height: 50px;
+  margin-right: 10px;
+  text-align: center;
+  vertical-align: middle;
+  width: 50px;
+}
+.steps li.active span{
+  background-color: #b1ca00;
+}
+.steps li p{
+  background: white;
+  color: #999;
+  display: inline-block;
+  font-size: 1em;
+  margin: 0;
+  padding: 0 5px 0 0;
+  position: relative;
+  z-index: 1;
+}
+.steps li.active p{
+  color: #444;
+}
+.steps li hr{
+  border-top: 1px solid #999;
+  position: absolute;
+  margin: 0;
+  top: 50%;
+  right: 10px;
+  width: 20%;  
+}
+
+.row-flex{
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  
+  -webkit-flex-flow: row wrap;
+  justify-content: space-around;
+}
+.col-flex{
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.icon-option{
+  background: #70af1a;
+  border-radius: 50%;
+  display: flex;
+  overflow: hidden;
+}
+
+
+@media screen and (max-width:768px){
+  .company-logo{
+    margin: auto;
+  }
+}
+
+@media screen and (max-width:500px){
+  .col-flex{
+    width: calc(50vw - 10px);
+    height: calc(50vw - 10px);
+  }
+}

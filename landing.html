@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Kiosko Papercut</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="custom-style.css">
+</head>
+<body>
+  <header>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-12 col-sm-6">
+          <img class="company-logo img-responsive" src="<?php echo $this->basePath().$logo ?>">
+        </div>
+        <div class="col-sm-6 hidden-xs">
+          <ul class="steps">
+            <li class="active">
+              <span>1</span>
+              <p>Ingresa</p>
+              <hr>
+            </li>
+            <li>
+              <span>2</span>
+              <p>Selecciona</p>
+              <hr>
+            </li>
+            <li>
+              <span>3</span>
+              <p>Imprime</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>        
+  </header>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 col-xs-12">
+        <div class="row-flex">
+          <div class="col-flex">
+            <div class="icon-option ico-pin"><img src="img/ico-pin.png" alt="" class="img-responsive"></div>
+          </div>
+          <div class="col-flex">
+            <div class="icon-option ico-card"><img src="img/ico-card.png" alt="" class="img-responsive"></div>
+          </div>
+          <div class="col-flex">
+            <div class="icon-option ico-user"><img src="img/ico-user.png" alt="" class="img-responsive"></div>
+          </div>
+          <div class="col-flex">
+            <div class="icon-option ico-guest"><img src="img/ico-guest.png" alt="" class="img-responsive"></div>
+          </div>
+        </div>      
+      </div>
+    </div>
+  </div>
+
+
+</body>
+</html>
