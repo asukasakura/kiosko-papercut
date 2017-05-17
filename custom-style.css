@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css?family=Droid+Sans:400,700');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800');
 body{
-  font-family: 'Droid Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 16px;
   font-weight: 400;
 }
@@ -46,7 +46,7 @@ header div{
   width: 50px;
 }
 .steps li.active span{
-  background-color: #b1ca00;
+  background-color: #8cb828;
 }
 .steps li p{
   background: white;
@@ -83,15 +83,33 @@ header div{
 .col-flex{
   display: flex;
   margin-bottom: 20px;
+  padding-bottom: 32px;
+  position: relative;
+  text-align: center;
 }
 
 .icon-option{
-  background: #70af1a;
+  background: #8cb828;
   border-radius: 50%;
   display: flex;
   overflow: hidden;
 }
-
+.col-flex:nth-child(2) .icon-option{
+  background: #5babb3;
+}
+.col-flex:nth-child(3) .icon-option{
+  background: #f18740;
+}
+.col-flex:nth-child(4) .icon-option{
+  background: #f5a93c;
+}
+.col-flex p{
+  font-size: 22px;
+  position: absolute;
+  bottom: 0;
+  margin: 0;
+  width: 100%;
+}
 
 @media screen and (max-width:768px){
   .company-logo{
