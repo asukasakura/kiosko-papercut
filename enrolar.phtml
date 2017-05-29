@@ -1,0 +1,338 @@
+<!-- Rutas -->
+<?php $url   = $this->url('login', ['action' => 'enrolarTarjeta']); ?>
+<?php $index = $this->url('login', ['action' => 'kiosco']); ?>
+<?php $addnewuser = $this->url('login', ['action' => 'addnewuser']); ?>
+
+
+<div class="row">
+  <div class="col-xs-12 text-center">
+    <h2>ENROLAR USUARIO</h2>
+  </div>
+</div>
+
+<div class="col-xs-12 col-md-offset-3 col-md-6">
+  <div class="row">
+    <div class="message-box info no-padding col-xs-12" role="alert" id="soloenrolar" style="display: none;">
+      <div class="icon-box">
+        <i class="fa fa-info-circle fa-2x"></i>
+      </div>
+      <p>Ingresa usuario y contraseña para enrolar tu tarjeta</p>
+    </div>
+
+
+    <div class="message-box info no-padding col-xs-12" role="alert" id="nuevoUsuario" style="display: none;">
+      <div class="icon-box">
+        <i class="fa fa-info-circle fa-2x"></i>
+      </div>
+      <p>Ingresa usuario y contraseña para enrolar tu tarjeta. <br> Para crear nuevo usuario ingrese <a href="<?php echo $addnewuser."/".$kiosco ?>">AQUÍ</a></p>
+    </div>
+  </div>
+</div>
+
+<div class="col-xs-12 col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6">
+  <div class=" contenedor-formulario">
+    <form action="<?= $url ?>" method="post" id="enrolar" name="enrolarUsuario" autoComplete="off" class="formulario">
+      
+      <div class="input-group">
+        <input type="text" id="username" name="username">
+        <label class="label" for="username" required="" autoComplete="off">Usuario</label>
+      </div>
+      <div class="input-group">
+        <input type="password" id="password" name="password">
+        <label class="label" for="password" required="" autocomplete="new-password">Contraseña</label>
+      </div>
+
+      <div class="input-group">
+        <div class="col-xs-6 no-padding">
+          <input class="btn btn-info" type="button" onclick="window.location.href = '<?php echo $index."/".$kiosco ?>';" name="enviar" value="Volver">
+        </div>
+        <div class="col-xs-6 no-padding text-right">
+          <input class="btn btn-success" type="submit" name="entrar" value="Enrolar">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Ventanas modales -->
+
+<div class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" id="ajaxerror">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <p><span class="glyphicon glyphicon-exclamation-sign"></span><b>&nbsp;&nbsp; Ha fallado la conexión</b></p>
+      </div> 
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success btn-enviarModal" data-dismiss="modal">Aceptar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" id="userpassmodal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <p><span class="glyphicon glyphicon-user"></span><b>&nbsp;&nbsp;Usuario o contraseña inválidos. Por favor, intente nuevamente</b></p>
+      </div> 
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success btn-enviarModal" id="btnAceptarErrorUserPass" data-dismiss="modal">Aceptar</button>
+      </div>
+    </div><!-- /.modal-content --> 
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" id="userpassmodalnoexist">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <p><span class="glyphicon glyphicon-user"></span><b>&nbsp;&nbsp;Usuario no registrado. Por favor, intente nuevamente</b></p>
+      </div> 
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success btn-enviarModal" id="btnUserpassmodalnoexist" data-dismiss="modal">Aceptar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" id="usernoexist">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <p><span class="glyphicon glyphicon-user"></span><b>&nbsp;&nbsp;Usuario no registrado. ¿Desea crear una nueva cuenta de usuario?</b></p>
+      </div> 
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success btn-enviarModal" id="newuserbtn">Aceptar</button>
+        <button type="button" class="btn btn-default" id="newuserbtncancelar" data-dismiss="modal">Cancelar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" id="enrolado">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <p><span class="glyphicon glyphicon-user"></span><b>&nbsp;&nbsp;Usuario enrolado exitosamente</b></p>
+      </div> 
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success btn-enviarModal" name="enroladobtnexitoso" id="enroladobtnexitoso">Aceptar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" id="noenrolado">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <p><span class="glyphicon glyphicon-user"></span><b>&nbsp;&nbsp;Error al intentar enrolar usuario. Intente nuevamente</b></p>
+      </div> 
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success btn-enviarModal" data-dismiss="modal">Aceptar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" id="sessionout">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <p><span class="glyphicon glyphicon-user"></span><b>&nbsp;&nbsp;Ha caducado la sesión.</b></p>
+      </div> 
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success btn-enviarModal" data-dismiss="modal" id="btnLogin">Aceptar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" id="timeoutsessionmodal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <p><span class="glyphicon glyphicon-exclamation-sign"></span><b>&nbsp;&nbsp; Su tiempo de sesión ha expirado</b></p>
+      </div> 
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" id="btnIdleTimeOk" name="btnIdleTimeOk" data-dismiss="modal">Aceptar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+<script type="text/javascript">
+
+    var nuevoUsuario = '<?php echo $nuevoUsuario ?>'
+    var enableKeyboard = '<?php echo $enableKeyboard ?>';
+    var enableKeyboardAlways = '<?php echo $enableKeyboardAlways ?>';
+
+    (nuevoUsuario == "Y" ? $('#nuevoUsuario').show():$('#soloenrolar').show());
+
+    if(enableKeyboardAlways == "Y")
+    {
+      $("#username").addClass("teclado");
+      $("#password").addClass("teclado");
+    }else if(enableKeyboard == "N")
+    {
+      $("#username").removeClass("teclado");
+      $("#password").removeClass("teclado");
+      $("#username").keyboard().getkeyboard().destroy();
+      $("#password").keyboard().getkeyboard().destroy();
+    }
+
+     if(isMobile.any())
+      {
+        $("#username").removeClass("teclado");
+        $("#password").removeClass("teclado");
+        $("#username").keyboard().getkeyboard().destroy();
+        $("#password").keyboard().getkeyboard().destroy();
+      }
+
+
+    var idleTime = 0;
+    var idleTimeConfig = '<?php echo $idleTime ?>';
+    $(document).ready(function () {
+        //Incrementa en un minuto el contador idletTime
+        var idleInterval = setInterval(timerIncrement, 1000); 
+
+        console.log("setinverval -"+idleInterval);
+
+        //Iguala el contador a cero si hay movimiento de mouse
+        $(this).mousemove(function (e) {
+            idleTime = 0;
+        });
+        //Iguala el contador a cero si se presiona alguna tecla
+        $(this).keypress(function (e) {
+            idleTime = 0;
+        });
+    });
+
+    function timerIncrement() {
+        idleTime = idleTime + 1;
+        console.log(idleTime);
+        if (idleTime >=  idleTimeConfig) { // Tiempo de inactividad
+            window.location.href = '<?php echo $index."/".$kiosco ?>';
+        }
+    }
+
+function limpiarCampos()
+{
+  $('#username').val("");
+  $('#password').val("");
+}
+
+
+$('#enrolado').on('shown.bs.modal', function () {
+    $('#enroladobtnexitoso').focus();
+});
+
+$('#userpassmodal').on('shown.bs.modal', function () {
+    limpiarCampos();
+    $('#btnAceptarErrorUserPass').focus();
+});
+
+$('#usernoexist').on('shown.bs.modal', function () {
+    $('#newuserbtn').focus();
+});
+
+$('#userpassmodalnoexist').on('shown.bs.modal', function () {
+    limpiarCampos();
+    $('#btnUserpassmodalnoexist').focus();
+});
+
+
+
+  $('#enrolar').on('submit', function (e){
+    e.preventDefault();
+    $.ajax({
+      url: '<?php echo $url ?>',
+      type: 'POST', 
+      data: $("#enrolar").serialize(), 
+      dataType: 'json',
+      timeout: 5000,
+      success: function(data) {
+
+        console.log(data);
+      if(data.respuesta == "session_destroy")
+      {
+        $('#sessionout').modal("show");
+      }else if(data.respuesta =="userpassinvalid")
+      {
+        $('#userpassmodal').modal('show');
+      }else if(data.respuesta =="notcardregistration")
+      {
+        $('#userpassmodalnoexist').modal('show');
+      }else if(data.respuesta =="newuser"){
+        $('#usernoexist').modal('show');
+      }else if(data.respuesta ="enrolado"){
+        $('#enrolado').modal('show');
+      }else if(data.respuesta =="errorenrolar"){
+        $('#noenrolado').modal('show');
+      }
+    },
+    error: function(xhr, textStatus, errorThrown){
+       $('#ajaxerror').modal('show');
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$('#btnLogin').on('click', function (e){
+    window.location.href = '<?php echo $index."/".$kiosco ?>';
+  });
+  $('#newuserbtn').on('click', function (e){
+    window.location.href = '<?php echo $addnewuser."/".$kiosco ?>';
+  });
+</script>
+
+<script type="text/javascript">
+  $('#enroladobtnexitoso').on('click', function (e){
+    e.preventDefault();
+    window.location.href = '<?php echo $index."/".$kiosco ?>';
+  });
+
+  // Funciones para diseño de formulario
+(function() {
+  var formulario = document.enrolarUsuario,
+    elementos = formulario.elements;
+  var focusInput = function() {
+    this.parentElement.children[1].className = "label active";
+    this.parentElement.children[0].className = this.parentElement.children[0].className.replace("error", "");
+  };
+  var blurInput = function() {
+    if (this.value <= 0) {
+      this.parentElement.children[1].className = "label";
+      this.parentElement.children[0].className = this.parentElement.children[0].className + " error";
+    }
+  };
+  // ---- EN CASO QUE ESTE AUTOCOMPLETADO ---
+  $("form input[type='text'], form input[type='password']").val('');
+
+  // --- Eventos ---
+  
+  for (var i = 0; i < elementos.length; i++) {
+    if (elementos[i].type == "text" || elementos[i].type == "email" || elementos[i].type == "password") {
+      elementos[i].addEventListener("focus", focusInput);
+      elementos[i].addEventListener("blur", blurInput);
+    }
+  }
+}())
+</script>

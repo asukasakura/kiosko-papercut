@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Kiosko Papercut</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="https://use.fontawesome.com/4c6afdbfd2.js"></script>
+
+
+  <link rel="stylesheet" href="custom-style.css">
+</head>
+<body>
+  <header>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-xs-12 col-sm-6">
+              <img class="company-logo img-responsive" src="<?php echo $this->basePath().$logo ?>">
+            </div>
+            <div class="col-xs-12 col-sm-6 text-right">
+              <ul class="profile-user">
+                <li class="user"><i class="fa fa-user-circle-o"></i> Hola <strong>usuario</strong></li>
+                <li class="balance">Saldo <strong>$0</strong></li>
+                <li class="logout"><i class="fa fa-power-off"></i> Salir</li>
+              </ul>
+            </div>
+          </div>
+          <div class="row">  
+            <div class="col-xs-12 col-md-offset-2 col-md-8 hidden-xs">
+              <ul class="steps">
+                <li class="active">
+                  <span>1</span>
+                  <p>Ingresa</p>
+                  <hr>
+                </li>
+                <li>
+                  <span>2</span>
+                  <p>Selecciona</p>
+                  <hr>
+                </li>
+                <li>
+                  <span>3</span>
+                  <p>Imprime</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>        
+      </header>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="message-box info col-xs-12 col-md-offset-2 col-md-8">
+        
+          <div class="icon-box">
+            <i class="fa fa-info-circle fa-2x"></i>
+          </div>
+          <p><strong>En este kiosco podrás:</strong> Enrolarte, Registrarte y Asociar tu N° PIN.</p>
+        
+      </div>
+    </div>
+
+<div class="row total-row">
+  <div class="col-xs-12 col-md-offset-4 col-md-4 total-column">
+    <div class="col-xs-6 no-padding column">
+      <i class="fa fa-file-o"></i>
+      <span>22</span>
+      <p>Páginas a imprimir</p>
+    </div>
+    <div class="col-xs-6 no-padding column">
+      <i class="fa fa-usd"></i>
+      <span>9.990</span>
+      <p>Costo total</p>
+    </div>
+  </div>
+  <div class="col-xs-12 col-md-offset-4 col-md-4 total-column">
+    <button type="button" name="btnImprimir" id="btnImprimir" class="btn-submit button-print center-block" disabled="true">IMPRIMIR</button>
+  </div>
+</div>
+    
+
+    <div class="contenedor-formulario">
+  <div class="wrap">
+    <form action="" class="formulario" name="formulario_registro" method="get">
+      <div>
+        <div class="input-group">
+          <input type="text" id="nombre" name="nombre">
+          <label class="label" for="nombre">Nombre:</label>
+        </div>
+        <div class="input-group">
+          <input type="email" id="correo" name="correo">
+          <label class="label" for="correo">Correo:</label>
+        </div>
+        <div class="input-group">
+          <input type="password" id="pass" name="pass">
+          <label class="label" for="pass">Contraseña:</label>
+        </div>
+        <div class="input-group">
+          <input type="password" id="pass2" name="pass2">
+          <label class="label" for="pass2">Repetir Contraseña:</label>
+        </div>
+        <div class="input-group radio">
+          <input type="radio" name="sexo" id="hombre" value="Hombre">
+          <label for="hombre">Hombre</label>
+          <input type="radio" name="sexo" id="mujer" value="Mujer">
+          <label for="mujer">Mujer</label>
+        </div>
+        <div class="input-group checkbox">
+          <input type="checkbox" name="terminos" id="terminos" value="true">
+          <label for="terminos">Acepto los Terminos y Condiciones</label>
+        </div>
+
+        <input type="submit" id="btn-submit" value="Enviar">
+      </div>
+    </form>
+  </div>
+</div>
+
+  </div>
+<script>
+  // Recorrer los elementos y hacer que onchange ejecute una funcion para comprobar el valor de ese input
+(function() {
+
+  var formulario = document.formulario_registro,
+    elementos = formulario.elements;
+
+  // Funcion que se ejecuta cuando el evento click es activado
+
+  var validarInputs = function() {
+    for (var i = 0; i < elementos.length; i++) {
+      // Identificamos si el elemento es de tipo texto, email, password, radio o checkbox
+      if (elementos[i].type == "text" || elementos[i].type == "email" || elementos[i].type == "password") {
+        // Si es tipo texto, email o password vamos a comprobar que esten completados los input
+        if (elementos[i].value.length == 0) {
+          console.log('El campo ' + elementos[i].name + ' esta incompleto');
+          elementos[i].className = elementos[i].className + " error";
+          return false;
+        } else {
+          elementos[i].className = elementos[i].className.replace(" error", "");
+        }
+      }
+    }
+
+    // Comprobando que las contraseñas coincidan
+    if (elementos.pass.value !== elementos.pass2.value) {
+      elementos.pass.value = "";
+      elementos.pass2.value = "";
+      elementos.pass.className = elementos.pass.className + " error";
+      elementos.pass2.className = elementos.pass2.className + " error";
+    } else {
+      elementos.pass.className = elementos.pass.className.replace(" error", "");
+      elementos.pass2.className = elementos.pass2.className.replace(" error", "");
+    }
+
+    return true;
+  };
+
+  var validarRadios = function() {
+    var opciones = document.getElementsByName('sexo'),
+      resultado = false;
+
+    for (var i = 0; i < elementos.length; i++) {
+      if (elementos[i].type == "radio" && elementos[i].name == "sexo") {
+        // Recorremos los radio button
+        for (var o = 0; o < opciones.length; o++) {
+          if (opciones[o].checked) {
+            resultado = true;
+            break;
+          }
+        }
+
+        if (resultado == false) {
+          elementos[i].parentNode.className = elementos[i].parentNode.className + " error";
+          console.log('El campo sexo esta incompleto');
+          return false;
+        } else {
+          // Eliminamos la clase Error del radio button
+          elementos[i].parentNode.className = elementos[i].parentNode.className.replace(" error", "");
+          return true;
+        }
+      }
+    }
+  };
+
+  var validarCheckbox = function() {
+    var opciones = document.getElementsByName('terminos'),
+      resultado = false;
+
+    for (var i = 0; i < elementos.length; i++) {
+      if (elementos[i].type == "checkbox") {
+        for (var o = 0; o < opciones.length; o++) {
+          if (opciones[o].checked) {
+            resultado = true;
+            break;
+          }
+        }
+
+        if (resultado == false) {
+          elementos[i].parentNode.className = elementos[i].parentNode.className + " error";
+          console.log('El campo checkbox esta incompleto');
+          return false;
+        } else {
+          // Eliminamos la clase Error del checkbox
+          elementos[i].parentNode.className = elementos[i].parentNode.className.replace(" error", "");
+          return true;
+        }
+      }
+    }
+  };
+
+  var enviar = function(e) {
+    if (!validarInputs()) {
+      console.log('Falto validar los Input');
+      e.preventDefault();
+    } else if (!validarRadios()) {
+      console.log('Falto validar los Radio Button');
+      e.preventDefault();
+    } else if (!validarCheckbox()) {
+      console.log('Falto validar Checkbox');
+      e.preventDefault();
+    } else {
+      console.log('Envia');
+      e.preventDefault();
+    }
+  };
+
+  var focusInput = function() {
+    this.parentElement.children[1].className = "label active";
+    this.parentElement.children[0].className = this.parentElement.children[0].className.replace("error", "");
+  };
+
+  var blurInput = function() {
+    if (this.value <= 0) {
+      this.parentElement.children[1].className = "label";
+      this.parentElement.children[0].className = this.parentElement.children[0].className + " error";
+    }
+  };
+
+  // --- Eventos ---
+  formulario.addEventListener("submit", enviar);
+
+  for (var i = 0; i < elementos.length; i++) {
+    if (elementos[i].type == "text" || elementos[i].type == "email" || elementos[i].type == "password") {
+      elementos[i].addEventListener("focus", focusInput);
+      elementos[i].addEventListener("blur", blurInput);
+    }
+  }
+
+}())
+</script>
+</body>
+</html>

@@ -1,0 +1,1087 @@
+ <!-- Rutas -->
+<?php $data  = $this->url('liberador', ['action' => 'cargartrabajosliberador']); ?>
+<?php $releaseJob  = $this->url('liberador', ['action' => 'releaseJob']); ?>
+<?php $cancelJob  = $this->url('liberador', ['action' => 'cancelJob']); ?>
+<?php $infoTrabajos  = $this->url('liberador', ['action' => 'cargarinformacionliberador']); ?>
+<?php $redirectKiosco  = $this->url('login', ['action' => 'redirectKiosco']); ?>
+<?php $logout   = $this->url('login', ['action' => 'logout']); ?>
+<?php // $registroTrabajos  = $this->url('liberador', ['action' => 'registroTrabajosLiberador']); ?>
+
+<!-- <div class="usersaldo">
+<div class="row">
+    <div class="col hidden-lg hidden-md hidden-sm"><p class="labelKioscoLib">Usuario: <b id="username"><?php echo $username ?></b></p></div>
+    <div class="col hidden-lg hidden-md hidden-sm"><p class="labelKioscoLib">Saldo: <b>$<input class="inputInfo" type="text" name="saldoXS" id="saldoXS" readonly=""></b></p></div>
+</div>
+</div>
+
+<div class="row pull-right">
+  <div class="col-md-12 col-sm-12 hidden-xs">
+     <p class="labelImpresora">Estado: <b id="printerStatus" name="printerStatus"></b>
+     <span id="printerIcon" name="printerIcon" class="glyphicon glyphicon-print" ></span></p>
+  </div>
+</div>
+
+<div class="container-fluid">-->
+<!-- Información: nombre de usuario y saldo - Barra con opciones y cerrar sesión -->
+  <!-- <div class="row">
+    <div class="col hidden-xs"><p class="labelKioscoLib">Usuario: <b id="username"><?php echo $username ?></b></p></div>
+    <div class="col hidden-xs"><p class="labelKioscoLib">Saldo: <b>$<input class="inputInfo" type="text" name="saldo" id="saldo" readonly=""></b></p></div>
+  </div> -->
+  <!-- Botones seleccionar todo, deseleccionar y cerrar sesión -->
+  <!-- <div class="row pull-right">
+    <div class="col-md-4 col-sm-4 hidden-xs">
+      <input type="button" class="btn btn-tabla" name="select_all_btn" id="select_all_btn" value="Seleccionar todo">
+    </div>
+    <div class="col-md-4 col-sm-4 hidden-xs">
+       <input type="button" class="btn btn-tabla" id="deselect_all_btn" name="deselect_all_btn" value="Deseleccionar">
+    </div> -->
+    <!-- <div class="col-md-4 col-sm-4 hidden-xs">
+       <input type="button" class="btn btn-logout" name="btn-logout" id="btn-logout" value="Cerrar sesión">
+    </div> -->
+  <!-- </div>
+</div>
+ -->
+
+<!-- <div class="cerrar-sesion">
+  <div class="row">
+    <div class="hidden-lg hidden-md hidden-sm col-xs-offset-8 col-xs-5">
+      <span class="glyphicon glyphicon-log-out"></span><a class="lib" href="<?php echo $logout ?>"> Cerrar sesión</a>
+    </div>
+  </div>
+</div> -->
+
+
+  <div class="row">
+    <div id="alertSaldo" data-dismiss="alert" class="message-box alert-dismissable danger no-padding my-20 col-xs-12 col-md-offset-2 col-md-8  fade in hidden">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <div class="icon-box">
+        <i class="fa fa-exclamation-circle fa-2x"></i>
+      </div>
+      <p name="infoSaldo" id="infoSaldo"></p>
+      </div>
+  </div>
+
+<div class="row">
+  <div class="col-xs-6 col-sm-6">
+    <div class="delete-button danger-text">
+      <i class="fa fa-trash"></i>
+      <input type="button" name="btnDescartar" id="btnDescartar" value="BORRAR TRABAJOS" disabled="true">
+    </div>
+  </div>
+  <div class="col-xs-6 col-sm-6 text-right">
+    <div class="search-box">
+      <input placeholder="Buscar trabajo..." type="text" id="search" name="search" class="filter inputKiosco" autoComplete="off">
+    </div>
+  </div>
+</div>
+<!-- Inicio tabla lista trabajos -->
+<form id="frm-listatrabajos" action="<?php $releaseJob ?>" method="post">
+  <table id="listaTrabajos" name="listaTrabajos" class="table display responsive table-hover kiosko-table" cellspacing="0" width="100%">
+  <!-- table-striped -->
+      <thead>
+          <tr>
+            <th><input name="select_all" value="1" id="select_all" type="checkbox" /></th>
+              <th>Fecha</th>
+              <th>Impresora</th>
+              <th class="all">Documento</th>
+              <th class="all">Copias</th>
+              <th class="all">Páginas</th>
+              <th class="all">Costo</th>
+          </tr>        
+      </thead>
+  </table>
+  <table class="totales">
+    <tr>
+      <td>TOTALES</td>
+      <td width="6%"><input type="text" class="inputInfo" name="totalCopias" id="totalCopias" readonly=""></td>
+      <td width="6%"><input type="text" class="inputInfo" name="totalPaginas" id="totalPaginas" readonly=""></td>
+      <td width="6%"><input type="text" class="inputInfo" name="valorTotal" id="valorTotal" readonly=""></td>
+    </tr>
+  </table>
+
+  <!-- <div class="row">
+  <br>
+    <div class="col-md-1">
+      <label>Total de págs</label><br>
+       
+    </div>
+    <div class="col-md-9">
+      <label>Valor total</label><br>
+       
+    </div>
+    <div class="col-md-1"><b><p id="totalPaginasSeleccionadas"></p></b></div>
+    <div class="col-md-1"><b><p id="totalCostoSeleccionado"></p></b></div>
+  </div> -->
+
+  <!-- Alerta saldo insuficiente -->
+  <!-- <div id="alertSaldo" class="alert alert-danger alert-dismissable fade in hidden"> -->
+  <!-- <div id="alertSaldo" class="alert alert-danger alert-dismissable">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <div class="row">
+      <div class="col-md-4">
+        <p name="infoSaldo" id="infoSaldo">No tienes saldo para imprimir <span id="siCarga">puedes cargar dinero aquí</span></p>
+      </div>
+      <div class="col-md-4">
+        
+        <input type="button" id="noCarga" name="noCarga" data-dismiss="alert" value="No, no quiero cargar dinero">
+      </div>
+    </div>
+  </div> -->
+
+  <!--
+  <div class="row emptyPrint">
+    <div class="col-xs-12 text-center blue-text my-20">
+      <i class="fa fa-info-circle"></i>
+      <strong>Selecciona trabajos a imprimir</strong>
+    </div>
+  </div>
+  -->
+
+  <div class="row total-row">
+    <div class="col-xs-12 col-md-offset-4 col-md-4 total-column">
+      <div class="col-xs-6 no-padding column">
+        <i class="fa fa-file-o"></i>
+        <span id="totalPaginasSeleccionadas"></span>
+        <p>Páginas a imprimir</p>
+      </div>
+      <div class="col-xs-6 no-padding column">
+        <i class="fa fa-usd"></i>
+        <span id="totalCostoSeleccionado"></span>
+        <p>Costo total</p>
+      </div>
+    </div>
+    <div class="col-xs-12 col-md-offset-4 col-md-4 total-column">
+      <button type="button" name="btnImprimir" id="btnImprimir" class="btn-submit button-print center-block" disabled="true">IMPRIMIR</button>
+    </div>
+  </div>
+
+  <!-- Info trabajos -->
+  <!-- <div class="container-fluid">
+  <br>
+    <div class="row">
+      <div class="col-md-1 col-sm-2 hidden-xs">
+       
+      </div>
+      <div class="col-md-7 col-sm-4 hidden-xs">
+       
+      </div> -->
+      <!-- Botones -->
+      <!--<div class="col-md-2 col-sm-3 col-xs-6">
+       <input type="button" name="btnImprimir" id="btnImprimir" class="btn-submit" value="Imprimir" disabled="true">
+      </div>
+      <div class="col-md-2 col-sm-3 col-xs-6">
+        <input type="button" name="btnDescartar" id="btnDescartar" class="btn-cancel" value="Eliminar" disabled="true">
+      </div>
+    </div>
+  </div>
+  <br> -->
+</form>
+
+<!--Plugin for jquery-->
+<script type="text/javascript">
+
+document.getElementById("totalCostoSeleccionado").innerHTML = 0;
+document.getElementById("totalPaginasSeleccionadas").innerHTML = 0;
+var idleTime = 0;
+var idleTimeConfig = '<?php echo $idleTime ?>';
+$(document).ready(function () {
+    //Incrementa en un minuto el contador idletTime
+    var idleInterval = setInterval(timerIncrement, 1000); 
+
+    console.log("setinverval -"+idleInterval);
+
+    //Iguala el contador a cero si hay movimiento de mouse
+    $(this).mousemove(function (e) {
+        idleTime = 0;
+    });
+    //Iguala el contador a cero si se presiona alguna tecla
+    $(this).keypress(function (e) {
+        idleTime = 0;
+    });
+
+  $('#timeoutsessionmodal').on('shown.bs.modal', function() {
+      setTimeout(function(){ window.location.href = '<?php echo $logout."/".$kiosco ?>'; }, 5000);
+  });
+});
+
+function timerIncrement() {
+    idleTime = idleTime + 1;
+    console.log(idleTime);
+    if (idleTime >=  idleTimeConfig) { // Tiempo de inactividad
+        $('#timeoutsessionmodal').modal('show');
+    }
+}
+
+  $.extend( true, $.fn.dataTable.defaults, {
+    "language": {
+      "emptyTable": "No hay trabajos listos para imprimir",
+      "info": "Mostrando página _PAGE_ de _PAGES_",
+      "infoEmpty": "No hay trabajos para mostrar",
+      "lengthMenu": "Mostrando _MENU_ trabajos",
+      "loadingRecords": "Cargando...",
+      "search": "",
+      "infoFiltered": " ",
+      "processing": "En proceso...",
+      "zeroRecords": "No se han encontrado resultados",
+       "paginate": {
+         "previous": "Anterior",
+         "next": "Siguiente",
+         "first": "Primera página",
+         "last": "Última página"
+       }
+     }
+} );
+</script>
+
+<script type="text/javascript">
+  var jobEventId = [];
+  var data = [];
+  $(document).ready(function() {
+    //Oculta el buscar en dispositivos moviles
+    var extensions = {
+        "sFilter": "dataTables_filter hidden-xs",
+        "sFilterInput": "teclado form-control input-sm",
+    }
+    
+    // Used when bJQueryUI is false (buscar)
+    $.extend($.fn.dataTableExt.oStdClasses, extensions);
+    // Used when bJQueryUI is true (buscar)
+    $.extend($.fn.dataTableExt.oJUIClasses, extensions);
+
+    //Oculta los errores (alert) de data
+    $.fn.dataTable.ext.errMode = 'throw';
+
+      var table = $('#listaTrabajos').DataTable({
+        "scrollY": '30vh', //controla el scroll de la tabla - esto hace que haya un espacio innecesario
+        "scrollCollapse": true,
+        "searching": true,
+        "paging": false, //menu de pag anterior y siguiente
+        "bInfo" : false,
+        "bLengthChange": false,
+        "responsive": true,
+        "details": true,
+        "ajax": "<?php echo $infoTrabajos ?>",
+        'createdRow': function( row, data, dataIndex ) {
+              var id = data.eventId.replace("|", "_");
+              $(row).attr('id', id);
+          },
+
+        "columns": [
+          { 'data': 'eventId'},
+          { "data": "printTime" },
+          { "data": "printerName" },
+          { "data": "documentName" },
+          { "data": "copies" }, 
+          { "data": "totalPages" },
+          { "data": "cost" } 
+          ],
+        'columnDefs': [
+            /** Ancho columnas */
+            {'width': '8%', 'targets': 1},
+            {'width': '8%', 'targets': 2},
+            {'width': '30%', 'targets': 3},
+            {'width': '5%', 'targets': 4},
+            {'width': '5%', 'targets': 5},
+            {'width': '5%', 'targets': 6},
+           {
+              'targets': 0,
+              'checkboxes': {
+                 'selectRow': true,
+              },
+              'createdCell':  function (td, cellData, rowData, row, col) {
+                   $(td).attr('id', 'otherID'); 
+                },
+           }
+          ],
+          'select': {
+             'style': 'multi'
+          },
+          'order': [[0,'desc']]
+          });
+
+          $('#totalCopias').val("0");
+          $('#totalPaginas').val("0");
+          $('#valorTotal').val("0");
+
+          InfoLiberador();
+
+          function valorTotal()
+          {
+            var costoTotal = 0;
+
+            var jobs = table.rows(".selected").data();
+
+            $.each(jobs, function(index, value){
+                costoTotal = costoTotal + value.cost;
+            });
+
+            $('#totalCostoSeleccionado').show();
+            $('#totalPaginasSeleccionadas').show();
+
+            return costoTotal;
+          }
+
+          function pagTotal()
+          {
+            var pagTotal = 0;
+
+            var jobs = table.rows(".selected").data();
+
+            $.each(jobs, function(index, value){
+                pagTotal = pagTotal + value.totalPages;
+            });
+
+            $('#totalCostoSeleccionado').show();
+            $('#totalPaginasSeleccionadas').show();
+
+            return pagTotal;
+          }
+
+          function trabajosTotal()
+          {
+            var pagTotal = 0;
+
+            var jobs = table.rows(".selected").data();
+
+            $.each(jobs, function(index, value){
+                pagTotal = pagTotal + value.totalPages;
+            });
+
+            return pagTotal;
+          }
+
+        function isEmpty( el ){
+            return !$.trim(el.html())
+        }
+        if (isEmpty($('#totalCostoSeleccionado'))) {
+          $('.emptyPrint').show();
+          $('.total-row').hide();
+        }else{
+          $('.emptyPrint').hide();
+          $('.total-row').show();
+        }
+        
+        var checkboxJob = function()
+        {
+          var checked = $("#listaTrabajos").find(".selected").find(":checkbox").length;
+
+            if(checked>=1)
+            {
+              $('#btnImprimir').prop('disabled', false);
+              $('#btnDescartar').prop('disabled', false);
+
+              document.getElementById("totalCostoSeleccionado").innerHTML = valorTotal();
+              document.getElementById("totalPaginasSeleccionadas").innerHTML = pagTotal();
+
+              if(trabajosTotal() == 1)
+              {
+                document.getElementById("cantTrabajos").innerHTML = "Imprimiendo 1 trabajo";
+              }else{
+                document.getElementById("cantTrabajos").innerHTML = "Imprimiendo "+trabajosTotal()+" trabajos";
+              }
+
+                var rows = table.rows( '.selected' ).indexes();
+                var data = table.rows( rows ).data();
+
+                //console.log(rows);
+               // console.log(data);
+
+            }else{
+              $('#btnImprimir').prop('disabled', true);
+              $('#btnDescartar').prop('disabled', true);
+            }
+        }
+
+          $('#search').on( 'keyup', function () {
+
+              table.search( this.value ).draw();
+          } );
+
+          $( "#search" ).focusout(function() {
+              table.search( $('#search').val() ).draw();
+            })
+            .blur(function() {
+              table.search( $('#search').val() ).draw();
+            });
+
+
+        $('#listaTrabajos tbody').on( 'click', 'input[type=checkbox]', function () {
+          checkboxJob();
+        });
+
+
+        $('#listaTrabajos tbody').on( 'click', 'tr', function () {
+          document.getElementById("totalCostoSeleccionado").innerHTML = valorTotal();
+          document.getElementById("totalPaginasSeleccionadas").innerHTML = pagTotal();
+
+          checkboxJob();
+
+        });
+
+        $("input[type='checkbox']").change(function() {
+          document.getElementById("totalCostoSeleccionado").innerHTML = valorTotal();
+          document.getElementById("totalPaginasSeleccionadas").innerHTML = pagTotal();
+
+            if(this.checked) {
+              $('#btnImprimir').prop('disabled', false);
+              $('#btnDescartar').prop('disabled', false);
+            }else{
+              $('#btnImprimir').prop('disabled', true);
+              $('#btnDescartar').prop('disabled', true);
+            }
+        }); 
+
+        $('#select_all_btn').on('click', function(e){
+          table.rows().select({selected : true});
+          if ($('#totalPaginas').val() >=1 ) {
+            $('#btnImprimir').prop('disabled', false);
+            $('#btnDescartar').prop('disabled', false);
+          }
+
+          document.getElementById("totalCostoSeleccionado").innerHTML = valorTotal();
+          document.getElementById("totalPaginasSeleccionadas").innerHTML = pagTotal();
+          
+        });
+
+        $('#deselect_all_btn').on('click', function(e){
+          table.rows().deselect();
+          $('#btnImprimir').prop('disabled', true);
+          $('#btnDescartar').prop('disabled', true);
+
+          document.getElementById("totalCostoSeleccionado").innerHTML = valorTotal();
+          document.getElementById("totalPaginasSeleccionadas").innerHTML = pagTotal();
+        });
+
+        $('#btnImprimir').on('click', function(e){
+
+          var checked = $("#listaTrabajos").find(".selected").find(":checkbox").length;
+
+          if(checked>=1)
+          {
+            $('#confirm-release').modal('show');
+          }else{
+            $('#jobnotfound').modal('show');
+          }
+          
+           //Ventana modal de confirmación liberación de trabajos
+
+        });
+
+         $('#btnDescartar').on('click', function(e){
+
+           var checked = $("#listaTrabajos").find(".selected").find(":checkbox").length;
+
+          if(checked>=1)
+          {
+            $('#confirm-delete').modal('show');
+          }else{
+            $('#jobnotfound').modal('show');
+          }
+          
+           //Ventana modal de confirmación liberación de trabajos
+
+        });
+
+          $('#btn-ok-delete').on('click', function(e){
+
+            $('#totalCostoSeleccionado').hide();
+            $('#totalPaginasSeleccionadas').hide();
+     
+              e.preventDefault();
+
+              var rows_selected = table.column(0).checkboxes.selected();
+
+              //console.log(rows_selected);        
+              // Iterate over all selected checkboxes
+              
+              $.each(rows_selected, function(index, rowId){            
+              jobEventId.push({name:index, value:rowId});
+
+
+                table.rows('.selected').remove().draw(false);
+                 
+
+              }); 
+
+               var data = $.param(jobEventId); // serializa array
+               
+               jobEventId = [];
+               jobEventId.length = 0;
+               
+               $.ajax({
+                 url: '<?php echo $cancelJob ?>',
+                 type: 'POST', 
+                 data: data,
+                 dataType: 'json', 
+                 timeout: 1000,
+                 success: function(jobInfo) {
+
+                  console.log(jobInfo);
+
+                  table.rows().deselect();
+
+                  if (jobInfo.respuesta=="jobnotfound" || jobInfo.respuesta=="papercutjobnotfound") {
+                    $('#jobnotfound').modal('show');
+                  }
+               },
+               error: function(xhr, textStatus, errorThrown){
+                console.log(errorThrown);
+                /*
+                  $('#ajaxerror').modal('show');
+                  $('#btn-error-ok').on('click', function(e)
+                   {
+                     window.location.href = '<?php echo $logout ?>';
+                   });
+                   */
+               }
+             });
+           });
+
+            $('#btn-ok-release').on('click', function(e){
+
+              $('#totalCostoSeleccionado').hide();
+              $('#totalPaginasSeleccionadas').hide();
+
+              e.preventDefault();
+              
+              var rows_selected = table.column(0).checkboxes.selected();        
+              // Iterate over all selected checkboxes
+              
+              $.each(rows_selected, function(index, rowId){            
+                 jobEventId.push({name:index, value:rowId});
+              }); 
+            
+               var data = $.param(jobEventId); // serializa array
+               
+               jobEventId = [];
+               jobEventId.length = 0;
+               
+               $.ajax({
+                 url: '<?php echo $releaseJob ?>',
+                 type: 'POST', 
+                 data: data,
+                 dataType: 'json', 
+                 timeout: 1000,
+                 success: function(jobInfo) {
+
+                  //console.log(jobInfo);
+
+                  table.rows().deselect();
+                  if(jobInfo.respuesta=="Success"){
+                   
+                   $('#barraProgreso').modal('show');
+                   setTimeout(function(){
+                    $('#barraProgreso').modal('hide');
+                   }, 5000);
+
+                  }else if(jobInfo.respuesta=="NotEnoughCredit")
+                  {
+                    $('#notEnoughCreditModal').modal('show');
+                  }else if(jobInfo.respuesta=="jobnotfound" || jobInfo.respuesta=="papercutjobnotfound") 
+
+                  {
+                  $('#jobnotfound').modal('show');
+                  }
+               },
+               error: function(xhr, textStatus, errorThrown){
+                console.log(errorThrown);
+                /*
+                  $('#ajaxerror').modal('show');
+                  $('#btn-error-ok').on('click', function(e)
+                   {
+                     window.location.href = '<?php echo $logout ?>';
+                   });
+                   */
+               }
+             });
+           });        
+      });
+</script>
+
+<script type="text/javascript">
+  function InfoLiberador(){
+    $.ajax({
+      url: '<?php echo $infoTrabajos ?>',
+      type: 'POST', 
+      dataType: 'json',
+      success: function(jobInfo) {
+
+
+      $('#btn-ok-release, #btn-ok-delete').on('click', function(e){
+          $('#totalPaginas').val(jobInfo.totalPages);
+          $('#valorTotal').val(jobInfo.costoTotal);
+          $('#totalCopias').val(jobInfo.copias);
+      });
+
+      if(jobInfo.totalPages != $('#totalPaginas').val())
+        {
+          $('#totalPaginas').val(jobInfo.totalPages);
+          $('#valorTotal').val(jobInfo.costoTotal);
+          $('#totalCopias').val(jobInfo.copias);
+        }
+        
+
+        console.log(jobInfo);
+
+        //JSON.PARSE
+        //var impresora = JSON.parse(jobInfo.impresora);
+        var status = jobInfo.impresora['status'];
+
+
+        if(status == "HABILITADA")
+        {
+          $('#printerStatus').text("HABILITADA");
+          $('#printerIcon').css('color', 'green');
+
+        }else if(status == "PAPEL ATASCADO"){
+
+          $('#printerStatus').text("PAPEL ATASCADO");
+          $('#printerIcon').css('color', 'red');
+
+        }else if(status == "ERROR"){
+
+          $('#printerStatus').text("ERROR");
+          $('#printerIcon').css('color', 'red');
+
+        }else if(status == "SIN CONEXIÓN")
+        {
+          $('#printerStatus').text("SIN CONEXIÓN");
+          $('#printerIcon').css('color', 'red');
+
+        }else if(status == "PAPEL ESCASO"){
+          $('#printerStatus').text("PAPEL ESCASO");
+          $('#printerIcon').css('color', 'red');
+
+        }else if(status == "ID INCORRECTO"){
+          $('#printerStatus').text("ID INCORRECTO");
+          $('#printerIcon').css('color', 'red');
+        }else{
+          $('#printerStatus').text("DESHABILITADA");
+          $('#printerIcon').css('color', 'red');
+        }
+      }
+    });
+    return false;
+  }
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function (){
+
+      var timer = 0;
+      var i = 0;
+      (function infoJobs(){
+        $.ajax({
+        url: '<?php echo $infoTrabajos ?>',
+        type: 'POST', 
+        dataType: 'json',
+        //timeout: 25000,
+        tryCount : 0,
+        retryLimit : 200,
+        success: function(jobInfo) {
+
+          if(jobInfo.sesion == "fail")
+          {
+            window.location.href = '<?php echo $logout."/".$kiosco ?>';
+          }
+
+          document.getElementById("saldoLy").innerHTML = "0";
+
+          if(jobInfo.saldo != $('#saldoLy').val())
+          {
+            document.getElementById("saldoLy").innerHTML = jobInfo.saldo;
+          }
+
+          var printerstatusinput = $('#printerStatus').text();
+
+          if(printerstatusinput != jobInfo.impresora.status)
+          {
+            InfoLiberador();
+          }
+
+          var table = $('#listaTrabajos').DataTable();
+
+          if(jobInfo.registro.ingresados.length>=1)
+          {
+            jobInfo.registro.ingresados.forEach(function(item){
+
+              var roww = 
+              { 'eventId' : item.eventId, 
+                'printTime': item.printTime, 
+                'printerName' : item.printerName, 
+                'documentName' : item.documentName, 
+                'totalPages': item.totalPages, 
+                'copies': item.copies,
+                'cost': item.cost
+              };
+
+              var rowNode = table.row.add(roww)
+              .draw()
+              .node();
+
+              $('td').addClass("sorting_1");
+           
+                $(rowNode)
+                .css('background-color', '#adfb57' )
+                .animate({ backgroundColor: "" }, 8000);
+            }); 
+
+                InfoLiberador();
+
+          }else if(jobInfo.registro.cambiosLiberados == true)
+          {
+
+            $.each(jobInfo.registro.liberados, function(liberadoIndex, liberadoId){          
+
+              var filasTabla = table.rows().data();
+
+              $.each(filasTabla, function(index, rowId){  
+
+                if(rowId['eventId'] == liberadoId['eventId'])
+                {
+                  var id_json = liberadoId['eventId'].replace("|", "_");
+
+                  table.row('#'+id_json).remove().draw(false);
+                  console.log("pase admin");
+                    
+                }
+              });                        
+            });
+
+            InfoLiberador();
+          }
+
+        var p = (jobInfo.totalPages==0 ? true:false);
+
+        if(p == true)
+        {
+          i++;
+          if('<?php echo $signoff ?>' == 'Y' && i<=1)
+          {
+            $('#confirm-signoff').modal('show');
+          }
+          $('#btnSignOff').click(function(){
+            $(this).data('clicked', true);
+            window.location.href = '<?php echo $logout."/".$kiosco ?>';
+          });
+        }else{
+          i = 0;
+        }
+
+        if('<?php echo $printererror ?>' == "release")
+        {
+           //$('#warningprinter').modal('show'); 
+        }else{
+          //var msg = "";
+
+          //$('#printerMsg').val("prueba");
+          $('#errorprinter').modal('show'); 
+        }
+
+        var jobEventId = [];
+        var data = [];
+
+        var table = $('#listaTrabajos').DataTable();
+
+        var rows_selected = table.column(0).checkboxes.selected();
+
+         $.each(rows_selected, function(index, rowId){            
+                 jobEventId.push({name:index, value:rowId});
+              }); 
+            
+        var data = $.param(jobEventId); // serializa array
+
+        if(jobInfo.infoSaldo == "saldoinsuficiente")
+        {
+          $('#alertSaldo').removeClass("hidden");
+          if('<?php echo $selfUserAdjustBalance ?>' == "Y")
+          {
+            $('#infoSaldo').text("Saldo insuficiente para imprimir trabajos. Puedes cargar saldo aquí");
+          }else{
+            $('#infoSaldo').text("Saldo insuficiente para imprimir trabajos");
+            $('#siCarga').addClass("hidden");
+            $('#noCarga').addClass("hidden");
+          }          
+        }else{
+          $('#alertSaldo').addClass("hidden");
+          $('#infoSaldo').text("");
+        }
+
+        timerefresh = '<?php echo $timeRefresh; ?>';
+        timer = setTimeout(infoJobs, timerefresh);
+        $('#conectando').modal('hide');
+      },
+      error: function(xhr, textStatus, errorThrown){
+        // if (textStatus == 'timeout') {
+
+          if($.inArray(textStatus, ['timeout', 'abort', 'error']) > -1){
+            this.tryCount++;
+            clearTimeout(timer);
+            $('#conectando').modal('show');
+       
+            if (this.tryCount <= this.retryLimit) {
+                //try again
+                console.log(this.tryCount);
+                return $.ajax(this);
+            }else if(this.tryCount >= this.retryLimit)
+            {
+              console.log("FINNNNNNNNNNNN");
+              clearTimeout(timer);
+
+              $('#conectando').modal('hide');
+              $('#ajaxerrorconexion').modal('show');
+              $('#btn-errorconexion-ok').on('click', function(e){
+                window.location.href = '<?php echo $logout."/".$kiosco ?>';
+              });
+            }
+            
+            console.log('fin primer if');
+            return;
+          }
+
+          if (xhr.status == 500) {
+             //$('#ajaxerrorconexion').modal('show');
+            } else {
+               console.log('else');
+               
+            }
+             $('#conectando').modal('hide');
+
+
+            //window.location.href = '<?php echo $logout."/".$kiosco ?>';
+
+            console.log(xhr);
+      }
+    });
+        //setTimeout(infoJobs, 1000);
+      })();
+  });
+
+ $('.logout').on('click', function(){
+   window.location.href = '<?php echo $logout."/".$kiosco ?>';
+ });
+
+  $('#logout').on('click', function(){
+   window.location.href = '<?php echo $logout."/".$kiosco ?>';
+ });
+
+function cargarDineroLink()
+{
+  window.location.href = 'http://desarrollo-ecoprint.openred.org/KioscoPago/pago/index/papercut/uai/papercut-server/15';
+}
+
+$('#infoSaldo').on('click', function(){
+  window.location.href = 'http://desarrollo-ecoprint.openred.org/KioscoPago/pago/index/papercut/uai/papercut-server/15';
+});
+
+
+</script>
+
+<!-- VENTANAS MODALES -->
+<div class="modal fade" id="confirm-signoff" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">      
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Lista de trabajos vacía</h4>
+            </div> 
+            <div class="modal-body">
+                <p>No se han encontrado documentos para liberar.</p>
+                <p>¿Deseas cerrar sesión?</p>
+            </div>
+            
+            <div class="modal-footer">
+                 <button type="button" class="btn btn-default" data-dismiss="modal">No, deseo quedarme</button>
+                <a class="btn btn-danger btn-ok" id="btnSignOff">Si, deseo salir</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" id="timeoutsessionmodal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <p><span class="glyphicon glyphicon-exclamation-sign"></span><b>&nbsp;&nbsp; Su tiempo de sesión ha expirado</b></p>
+      </div> 
+      <div class="modal-footer">
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" id="ajaxerror">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <p><span class="glyphicon glyphicon-exclamation-sign"></span><b>&nbsp;&nbsp; Por favor, vuelva a iniciar sesión</b></p>
+      </div> 
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" id="btn-error-ok" name="btn-error-ok" data-dismiss="modal">Aceptar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" id="ajaxerrorconexion">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <p><span class="glyphicon glyphicon-exclamation-sign"></span><b>&nbsp;&nbsp; Ha fallado la conexión. Por favor, intente más tarde</b></p>
+      </div> 
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" id="btn-errorconexion-ok" name="btn-errorconexion-ok" data-dismiss="modal">Aceptar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" id="conectando">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="text-center">
+        <p><span class="glyphicon glyphicon-warning-sign" style="color: yellow;"></span><b>&nbsp;&nbsp; Tenemos un problema. Estamos intentando restablecer la conexión &nbsp;&nbsp;</b><i class="fa fa-spinner fa-spin"></i><span class="sr-only"></span></p>
+        </div>
+      </div> 
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" id="jobnotfound">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <p><span class="glyphicon glyphicon-print"></span><b>&nbsp;&nbsp; No hay trabajos seleccionados</b></p>
+      </div> 
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Aceptar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" id="notEnoughCreditModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <p><span class="glyphicon glyphicon-print"></span><b>&nbsp;&nbsp; No tiene saldo suficiente para liberar documentos</b></p>
+      </div> 
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Aceptar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" id="errorprinter">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <p><span class="glyphicon glyphicon-print"></span><b>&nbsp;&nbsp; Hay un error <!--de "<input type="text" name="printerMsg" id="printerMsg" style="background: transparent; border: transparent;">" -->en la impresora. Por favor, dirígete a otro Kiosco </b></p>
+      </div> 
+      <div class="modal-footer">
+      <?php $logout   = $this->url('login', ['action' => 'logout']); ?>
+        <a class="btn btn-warning" name="salirliberador" id="salirliberador" href="<?php echo $logout."/".$kiosco ?>">Aceptar</a>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" id="barraProgreso">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="border-bottom: 1px solid #fff;">
+      </div>
+        <div style="width: 82%; margin: auto;">
+          <div class="progress" style="height: 31px;">
+            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+              <h5><b><p id="cantTrabajos"></p></b></h5>
+            </div>
+          </div>
+        </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" id="barraProgresoEliminar">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+        <div style="width: 82%; margin: auto;">
+          <div class="progress">
+            <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+              Eliminando trabajos
+            </div>
+          </div>
+        </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="confirm-release" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">      
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Confirmar tus trabajos</h4>
+            </div> 
+            <div class="modal-body">
+                <p>Estás a punto de liberar tus trabajos.</p>
+                <p>¿Deseas seguir?</p>
+            </div>
+            
+            <div class="modal-footer">
+                 <button type="button" class="btn btn-default" name="btn-cancel-release" data-dismiss="modal">Cancelar</button>
+                <input type="button" class="btn btn-warning btn-ok" data-dismiss="modal" name="btn-ok-release" id="btn-ok-release" value="Imprimir">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-delete" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">      
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Confirmar tus trabajos</h4>
+            </div> 
+            <div class="modal-body">
+                <p>Estás a punto de eliminar tus trabajos.</p>
+                <p>¿Deseas seguir?</p>
+            </div>
+            
+            <div class="modal-footer">
+                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                 <input type="submit" class="btn btn-danger btn-ok" data-dismiss="modal" name="btn-ok-delete" id="btn-ok-delete" value="Eliminar">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+  var enableKeyboardAlways = '<?php echo $enableKeyboardAlways ?>';
+  var enableKeyboard = '<?php echo $enableKeyboard ?>';
+
+  if(enableKeyboard == "N")
+  {
+    $(".filter").removeClass("filter");
+  }else{
+    $(".form-control").addClass("filter");
+  }
+
+  if(isMobile.any())
+  {
+    $(".filter").removeClass("filter");
+  }
+  </script>
